@@ -4,6 +4,7 @@ var nodes_ = [];
 var node_id_changes = [];
 var links_ = [];
 var node_s;
+var create_showed = 1;
 
 var selected_node = -1;
 var previous_node = null;
@@ -14,25 +15,39 @@ var nodes_list_div = d3.select(".nodes_list")
       .attr("id", "node_entries");
 
 var node_entries;
-function start_program(){
+function start_program(boo, data){
 
   // this.tooltip = d3.select(this.svgWrapperRef).append("div")
   //     .attr("class", "tooltip_bubble")
   //     .style("opacity", 0);
 
-  var q = queue();
-  q.defer(d3.json,'data/del.json');
-  // load_current_node_system();
-  q.awaitAll(function(error,data_list) {
-    if (error) throw error;
-    vis_data = data_list[0];
-    nodes_ = data_list[0].nodes;
-    links_ = data_list[0].links;
-
-    // console.log(nodes_);
+  if(boo){
+    nodes_ = data.nodes;
+    console.log(nodes_);
+    links_ = data.links;
     show_nodes_list();
-    make_sankey();
-  });
+    console.log(data);
+    make_sankey(data.nodes,data.links);
+  } else {
+    var q = queue();
+    // console.log('this');
+    q.defer(d3.json,'data/del.json');
+    // load_current_node_system();
+    q.awaitAll(function(error,data_list) {
+      if (error) throw error;
+      vis_data = data_list[0];
+      nodes_ = data_list[0].nodes;
+      links_ = data_list[0].links;
+
+      // console.log(nodes_);
+      show_nodes_list();
+      make_sankey(vis_data.nodes,vis_data.links);
+    });
+  }
+}
+
+function update_sankey(n,l){
+  make_sankey(n,l);
 }
 
 
@@ -43,7 +58,8 @@ function submit_node(){
   // console.log(nodes_);
   var name = $('#create_node_name').val();
   var content = $('#create_node_content').val();
-
+  $('.creation_window').css('display','none');
+  create_showed = 1;
   create_new_node(name,content,nodes_.length);
 }
 
@@ -63,6 +79,8 @@ function create_link(a,b){
   links_.push(obj);
 
   update_sankey(nodes_,links_);
+  toggle_creation(1);
+
 }
 function remove_link(){
   var a = $('#node_link_1_remove').val();
@@ -77,13 +95,23 @@ function remove_link(){
       links_.splice(i,1);
     }
   }
+  toggle_creation(1);
   update_sankey(nodes_,links_);
+
 }
 
 function edit_node(){
-  // selecteD_node;
+  // selected_node;
   // Selected node is collected in a variable.
-  console.log(nodes_[selecteD_node]);
+  var x = nodes_[selected_node];
+  var name = $('#edit_node_name').val();
+  var content = $('#edit_node_content').val();
+  x.name = name;
+  x.content = content;
+  nodes_[selected_node] = x;
+  toggle_creation(1);
+  update_nodes_list();
+
 }
 
 
@@ -173,14 +201,25 @@ function show_nodes_list(){
     .enter()
     .append('a')
     .classed('node_entry',true)
-    .html(function(d){return d.target_source + " | " + d.name + "<br>"})
+    .html(function(d){return "<b>"+d.target_source + ".</b>&nbsp;" + d.name + "<br>"})
     .on('click',function(d){
       d3.select(previous_node).style('color','black');
       previous_node = this;
       // selected_node = d.id;
       selected_node = d.target_source;
       d3.select(this).style('color','red');
-    });
+    })
+    .on('mouseover',handleMouseOver)
+    .on('mouseout',handleMouseOut);
+
+    function handleMouseOut(d){
+      d3.select(this)
+        .style('background-color','whitesmoke');
+    }
+    function handleMouseOver(d){
+      d3.select(this)
+        .style('background-color','#5c5b97');
+    }
 }
 
 function update_nodes_list(){
@@ -198,7 +237,7 @@ function update_nodes_list(){
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // These show and open the input box.
 
-var options = ["create_node","create_link","remove_link"];
+var options = ["create_node","create_link","remove_link","edit_node"];
 var opened_box = -1;
 
 function show_input(i){
@@ -208,7 +247,17 @@ function show_input(i){
       $("#"+options[i]).css('display','none');
     }
   }
-  $('#'+options[opened_box]).css('display','initial');
+  if(opened_box == 3){
+    if(selected_node != -1){
+      var name = $('#edit_node_name').val(nodes_[selected_node].name);
+      var content = $('#edit_node_content').val(nodes_[selected_node].id);
+      toggle_creation(0);
+      $('#'+options[opened_box]).css('display','initial');
+    }
+  } else {
+    toggle_creation(0);
+    $('#'+options[opened_box]).css('display','initial');
+  }
 }
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -227,7 +276,25 @@ function print_new_json(){
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
+function import_data(){
+  var message = $('textarea').val();
+  // console.log(message);
+  if(message.match(new RegExp('{\\s*"nodes".+'))){
+    var mes = JSON.parse(message);
 
+    if(mes.nodes !== null && mes.links !== null){
+      nodes_ = mes.nodes;
+      links_ = mes.links;
+      update_nodes_list();
+      make_sankey(mes.nodes,mes.links);
+      toggle_importbox(1);
+    }
+  } else {
+    alert("something is wrong with the format");
+
+  }
+
+}
 
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -238,6 +305,7 @@ function save_plan(){
     "nodes" : nodes_,
     "links" : links_
   };
+  console.log(fin);
   setCookie("my_plan",fin,365);
   alert("Din handlingsplan är nu sparad i en 'Cookie' på din dator och kommer användas vid nästa tillfälle.\n\nFör att vara säker på att du sparar den eller om du vill dela den med andra, klicka på 'Exportera' och spara texten i en separat fil på din dator.")
   console.log(read_cookie('my_plan'));
@@ -247,13 +315,17 @@ function save_plan(){
 //https://stackoverflow.com/questions/14573223/set-cookie-and-get-cookie-with-javascript
 //https://stackoverflow.com/questions/11344531/pure-javascript-store-object-in-cookie
 function setCookie(name,value,days) {
+  console.log(value);
     var expires = "";
     if (days) {
         var date = new Date();
         date.setTime(date.getTime() + (days*24*60*60*1000));
         expires = "; expires=" + date.toUTCString();
     }
+    console.log(JSON.stringify(value));
+    console.log(expires);
     document.cookie = name + "=" + (JSON.stringify(value) || "")  + expires + "; path=/";
+    // document.cookie = "tete=try;path=/;";
 }
 
 function read_cookie(name) {
@@ -263,4 +335,28 @@ function read_cookie(name) {
 }
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-start_program();
+
+function toggle_creation(a){
+  if(a == 1){
+    $('.creation_window').css('display','none');
+  } else {
+    $('.creation_window').css('display','initial');
+
+  }
+  create_showed = a;
+}
+
+window.addEventListener('click', function(e){
+
+
+      if(document.getElementById('creation_window').contains(e.target)){
+
+      } else {
+        if(create_showed == 2){
+          toggle_creation(1);
+        }
+        if(create_showed == 0){
+          create_showed = 2;
+        }
+      }
+});

@@ -1,0 +1,84 @@
+body {
+  font: 16px Sans-serif;
+}
+
+.node rect {
+  fill-opacity: .9;
+  /* shape-rendering: crispEdges; */
+}
+
+.node text {
+  font: 10px sans-serif;
+  pointer-events: none;
+  text-shadow: 0 1px 0 #fff;
+}
+.node:hover{
+  /* cursor:move; */
+}
+
+.link {
+  fill: none;
+  stroke: #5c5b97;
+  stroke-opacity: .2;
+}
+
+.link:hover {
+  stroke-opacity: .5;
+}
+
+
+#nav_bar_top{
+  background-color: #5c5b97;
+  height: 7vh;
+  border-bottom: .5px solid black;
+}
+
+.navbar{
+  height:100%;
+}
+.about_box{
+  display: none;
+  position: absolute;
+  background-color: white;
+  width: 40%;
+  top:0;
+  left:30%;
+  height:auto;
+  border: 1px solid black;
+  border-radius: 3px;
+}
+
+
+
+.blurredElement {
+    transition: 0.3s -webkit-filter linear;
+    /* -webkit-transition: 2s -webkit-filter linear; */
+    -moz-transition: 0.3s -moz-filter linear;
+    -o-transition: 0.3s -o-filter linear;
+
+     /* Any browser which supports CSS3 */
+    filter: blur(2px);
+
+    /* Firefox version 34 and earlier */
+    filter: url("blur.svg#gaussian_blur");
+
+    /* Webkit in Chrome 52, Safari 9, Opera 39, and earlier */
+    -webkit-filter: blur(2px);
+}
+
+
+.info_box {
+  position: absolute;
+  top:0;
+  left:30%;
+  width: 40%;
+  margin-top:1%;
+  /* height:auto; */
+  background-color:white;
+  height:500px;
+  border: 0.8px solid black;
+  border-radius: 2px;
+  max-height:75%;
+  display:none;
+  /* border: */
+}
