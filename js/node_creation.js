@@ -31,7 +31,7 @@ function start_program(boo, data){
   } else {
     var q = queue();
     // console.log('this');
-    q.defer(d3.json,'data/del.json');
+    q.defer(d3.json,'data/data.json');
     // load_current_node_system();
     q.awaitAll(function(error,data_list) {
       if (error) throw error;

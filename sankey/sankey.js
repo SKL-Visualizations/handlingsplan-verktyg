@@ -132,7 +132,6 @@ function create_sankey() {
         return Math.max(1, d.dy) + 'px';
       })
       .style('stroke',function(d){
-        // console.log(d.source.id);
         if(d.source.id != undefined){
           if(color_spec[d.source.id] != undefined){
             return color_spec[d.source.id];
@@ -314,10 +313,6 @@ d3.selectAll('.sankey-align').on('change', function() {
 });
 
 
-
-
-
-
 ////////////////////////////////
 
 var info_showed = 1;
@@ -395,15 +390,6 @@ function toggle_importbox(a){
 }
 
 window.addEventListener('click', function(e){
-
-      // sankey
-      // .nodeWidth(15)
-      // .nodePadding(10)
-      // .size([400, 400])
-      // .align('right')
-      // .layout(32);
-    // create_sankey();
-      // link.attr("d", path);
 
   if (document.getElementById('info_box').contains(e.target)){
     // Clicked in box
