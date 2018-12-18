@@ -58,9 +58,12 @@ function submit_node(){
   // console.log(nodes_);
   var name = $('#create_node_name').val();
   var content = $('#create_node_content').val();
+  var click_ = $('#create_node_click').val();
+  var mouseover_ = $('#create_node_mouseover').val();
+
   $('.creation_window').css('display','none');
   create_showed = 1;
-  create_new_node(name,content,nodes_.length);
+  create_new_node(name,content,click_,mouseover_,nodes_.length);
 }
 
 function submit_link(){
@@ -106,8 +109,12 @@ function edit_node(){
   var x = nodes_[selected_node];
   var name = $('#edit_node_name').val();
   var content = $('#edit_node_content').val();
+  var click_ = $('#edit_node_click').val();
+  var mouseover_ = $('#edit_node_mouseover').val();
   x.name = name;
   x.content = content;
+  x.click = click_;
+  x.mouseover = mouseover_;
   nodes_[selected_node] = x;
   toggle_creation(1);
   update_nodes_list();
@@ -118,10 +125,12 @@ function edit_node(){
 
 // Create a new node
 // A node is a piece of information under a section
-function create_new_node(name,content,id){
+function create_new_node(name,content,click_, mouseover_,id){
   var obj = {};
   obj.name = name;
   obj.content = content;
+  obj.click = click_;
+  obj.mouseover = mouseover_;
   obj.id = "test_"+id;
   obj.target_source = nodes_.length;
 
@@ -251,6 +260,8 @@ function show_input(i){
     if(selected_node != -1){
       var name = $('#edit_node_name').val(nodes_[selected_node].name);
       var content = $('#edit_node_content').val(nodes_[selected_node].id);
+      var click_ = $('#edit_node_click').val(nodes_[selected_node].click);
+      var mouseover_ = $('#edit_node_mouseover').val(nodes_[selected_node].mouseover);
       toggle_creation(0);
       $('#'+options[opened_box]).css('display','initial');
     }
@@ -277,7 +288,7 @@ function print_new_json(){
 
 
 function import_data(){
-  var message = $('textarea').val();
+  var message = $('#subject_area').val();
   // console.log(message);
   if(message.match(new RegExp('{\\s*"nodes".+'))){
     var mes = JSON.parse(message);

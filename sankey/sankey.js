@@ -89,6 +89,8 @@ function make_sankey(nodes_,links_){
     obj.name = nodes_[i].name;
     obj.id = nodes_[i].id;
     obj.pillar = nodes_[i].pillar;
+    obj.click = nodes_[i].click;
+    obj.mouseover = nodes_[i].mouseover;
     obj.target_source = nodes_[i].target_source;
     nodez.push(obj);
   }
@@ -192,7 +194,10 @@ function create_sankey() {
     })
     .append("title")
       .text(function (d) {
-        return d.name + "\n" + format(d.value);
+        if(d.mouseover == undefined){
+          d.mouseover == "";
+        }
+        return d.name + "\n" + d.mouseover;
       });
 
 
@@ -321,7 +326,10 @@ function toggle_infobox(d,a){
     d3.select('.info_box')
       .style('display','initial');
       // console.log(d);
-      text_content.html("<b>"+d.name + "</b><br>\n<hr style='width:90%;border: 2px solid #5c5b97; border-radius:2px;'>" + "Info Text <br>" + "");
+      if(d.click == undefined){
+        d.click ="";
+      }
+      text_content.html("<b>"+d.name + "</b><br>\n<hr style='width:90%;border: 2px solid #5c5b97; border-radius:2px;'>" /**+ "Info Text <br>"*/ + d.click);
   } else if(a == 1){
     d3.select('.info_box')
       .style('display','none');
