@@ -1,0 +1,32 @@
+{
+    "nodes":[
+        {
+            "name":"Delmål 2.3",
+            "id":"goal_2_3",
+            "target_source":0
+        },
+        {
+            "name":"Måluppfyllelse",
+            "id":"1",
+            "target_source":1
+        },
+        {
+            "name":"Digitalkompetens",
+            "id":"2",
+            "target_source":2
+        }
+
+    ],
+    "links":[
+        {
+            "source":1,
+            "value":60,
+            "target":0
+        },
+        {
+            "source":2,
+            "value":60,
+            "target":0
+        }
+    ]
+}

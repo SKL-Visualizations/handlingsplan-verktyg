@@ -15,12 +15,35 @@ var nodes_list_div = d3.select(".nodes_list")
       .attr("id", "node_entries");
 
 var node_entries;
-function start_program(boo, data){
 
-  // this.tooltip = d3.select(this.svgWrapperRef).append("div")
-  //     .attr("class", "tooltip_bubble")
-  //     .style("opacity", 0);
+function get_data(){
+  var d = 0;
+  var select = document.getElementById("lang-options");
+  var d = null;
+  // select.options[select.options.length] = new Option('Text 1', 'Value1');
+  if(select.options.length > 0) {
+    // window.alert("Text: " + select.options[select.selectedIndex].text + "\nValue: " + select.options[select.selectedIndex].value);
+    d = select.options[select.selectedIndex].value;
+  }
+  else {
+    window.alert("Select box is empty");
+  }
+  if(d.match('0')){
+    d = null;
+  }
+  if(d !== null){
+    // if(start == 0){
+      start_program(false,null,d);
+    // } else {
+      // update_sankey();
+    // }
+  }
+}
 
+
+function start_program(boo, data, file){
+
+  console.log(file);
   if(boo){
     nodes_ = data.nodes;
     console.log(nodes_);
@@ -31,14 +54,16 @@ function start_program(boo, data){
   } else {
     var q = queue();
     // console.log('this');
-    q.defer(d3.json,'data/data.json');
+    // q.defer(d3.json,'data/data.json');
+    q.defer(d3.json,'data/goals/'+file+'.json');
+
     // load_current_node_system();
     q.awaitAll(function(error,data_list) {
       if (error) throw error;
       vis_data = data_list[0];
       nodes_ = data_list[0].nodes;
       links_ = data_list[0].links;
-
+      d3.selectAll('.node_entry').remove();
       // console.log(nodes_);
       show_nodes_list();
       make_sankey(vis_data.nodes,vis_data.links);

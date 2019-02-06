@@ -1,0 +1,72 @@
+{
+    "nodes":[
+        {
+            "name":"Delmål 2.1",
+            "id":"goal_2_1",
+            "target_source":0
+        },
+        {
+            "name":"Barn och elever",
+            "id":"1",
+            "target_source":1
+        },
+        {
+            "name":"Personal",
+            "id":"2",
+            "target_source":2
+        },
+        {
+            "name":"Behovsinventering och analys",
+            "id":"3",
+            "target_source":3
+        },
+        {
+            "name":"Uppföljning",
+            "id":"4",
+            "target_source":4
+        },
+        {
+            "name":"Organisation",
+            "id":"5",
+            "target_source":5
+        },
+        {
+            "name":"Genomförande",
+            "id":"6",
+            "target_source":6
+        }
+
+    ],
+    "links":[
+        {
+            "source":1,
+            "value":240,
+            "target":0
+        },
+        {
+            "source":2,
+            "value":60,
+            "target":0
+        },
+        {
+            "source":3,
+            "value":60,
+            "target":1
+        },
+        {
+            "source":4,
+            "value":60,
+            "target":1
+        },
+        {
+            "source":5,
+            "value":60,
+            "target":1
+        },
+        {
+            "source":6,
+            "value":60,
+            "target":1
+        }
+    ]
+}

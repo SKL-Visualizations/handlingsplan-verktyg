@@ -1,0 +1,77 @@
+{
+    "nodes":[
+        {
+            "name":"Delmål 3.2",
+            "id":"goal_3_2",
+            "target_source":0
+        },
+        {
+            "name":"Administration",
+            "id":"1",
+            "target_source":1
+        },
+        {
+            "name":"Undervisning",
+            "id":"2",
+            "target_source":2
+        },
+        {
+            "name":"Digital kompetens",
+            "id":"3",
+            "target_source":3
+        },
+        {
+            "name":"Tillgång till digitala verktyg",
+            "id":"4",
+            "target_source":4
+        },
+        {
+            "name":"Digitaliseringsprocessen",
+            "id":"5",
+            "target_source":5
+        }
+
+    ],
+    "links":[
+        {
+            "source":1,
+            "value":180,
+            "target":0
+        },
+        {
+            "source":2,
+            "value":180,
+            "target":0
+        },
+        {
+            "source":3,
+            "value":60,
+            "target":1
+        },
+        {
+            "source":3,
+            "value":60,
+            "target":2
+        },
+        {
+            "source":4,
+            "value":60,
+            "target":1
+        },
+        {
+            "source":4,
+            "value":60,
+            "target":2
+        },
+        {
+            "source":5,
+            "value":60,
+            "target":1
+        },
+        {
+            "source":5,
+            "value":60,
+            "target":2
+        }
+    ]
+}

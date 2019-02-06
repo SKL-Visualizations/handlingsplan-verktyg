@@ -119,7 +119,8 @@ function make_sankey(nodes_,links_){
 }
 
 var pillars_x = [];
-var pillar_names = ["Strategi","Fokusområden","Delmål", "Effektmål"];
+// var pillar_names = ["Strategi","Fokusområden","Delmål", "Effektmål"];
+var pillar_names = ["","","",""];
 
 function create_sankey() {
 

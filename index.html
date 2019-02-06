@@ -29,6 +29,22 @@
           <!-- <button class="creation_button" type="button" onclick="save_plan()">Spara din plan</button><br> -->
           <button class="creation_button" type="button" onclick="print_new_json()">Exportera</button>
           <button class="creation_button" type="button" onclick="toggle_importbox(0)">Importera</button>
+          <br><br>
+          <div class="select-nodes" id="select-nodes">
+            <select id="lang-options">
+                    <option value="11">1.1</option>
+                    <option value="12">1.2</option>
+                    <option value="13">1.3</option>
+                    <option value="21">2.1</option>
+                    <option value="22">2.2</option>
+                    <option value="23">2.3</option>
+                    <option value="24">2.4</option>
+                    <option value="31">3.1</option>
+                    <option value="32">3.2</option>
+                    <option value="0" selected>Välj delmål</option>
+                  </select>
+              <input id="submit_button_4" type="button" value="Submit" onclick="get_data()">
+          </div>
         </div>
 
       </div>
@@ -80,7 +96,7 @@
           <a>Nod typ:</a><br>
           <input id="edit_node_content" type="text" name="content" value=""><br>
           <a>Click:</a><br>
-          
+
           <textarea class="px-2" style="width:100%;" id="edit_node_click" name="subject" placeholder="Klistra in din click text här.."></textarea>
           <br><a>Mouseover:</a><br>
           <textarea class="px-2" style="width:100%;" id="edit_node_mouseover" name="subject" placeholder="Klistra in din mouseover text här.."></textarea>
@@ -111,6 +127,8 @@
       </div>
     </div>
   </div>
+
+
     <script src="js/libraries/jquery-3.2.1.min.js"></script>
 
     <script src="js/libraries/d3.v4.min.js"></script>
@@ -122,20 +140,8 @@
 
     <script>
       function check_cookie() {
-        var ok= null;
-        if(ok !== null){
-          var confirmation = confirm("Vill du importera en handlingsplan eller använda standard mallen?");
-          if(confirmation == true){
-            // input box.
-            start_program(true,ok);
-          } else {
-            // console.log('yes');
-            start_program(false,null);
-          }
-        } else {
-          start_program(false,null);
-        }
-
+          // get_data();
+          // start_program(false,null,d);
       }
       window.onload=check_cookie();
 
